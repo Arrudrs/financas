@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Ano Financeiro — Assuma o Controle do Seu Dinheiro em 12 Meses</title>
+  <meta name="description" content="Sistema visual e 100% automático no Google Planilhas e Excel para controlar gastos fixos, variáveis, metas de economia e painel Orçado vs. Realizado.">
+  <style>
+    :root {
+      --bg: #05100d;
+      --surface: #0b1f19;
+      --surface-2: #112d24;
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.28);
+      --cyan: #06b6d4;
+      --gold: #f59e0b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .topbar {
+      background: linear-gradient(90deg, #065f46, #047857, #0f766e);
+      color: #fff;
+      text-align: center;
+      padding: 0.6rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+    .hero {
+      padding: 4.5rem 0 4rem;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding: 3rem 0; }
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-size: clamp(2.1rem, 4vw, 3.25rem);
+      line-height: 1.12;
+      font-weight: 800;
+      margin-bottom: 1.25rem;
+    }
+    h1 span {
+      background: linear-gradient(135deg, #34d399, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.12rem;
+      margin-bottom: 2rem;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.08rem;
+      text-decoration: none;
+      padding: 1.05rem 2.2rem;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px var(--emerald-glow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(16, 185, 129, 0.42); }
+    .hero-Visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.25rem;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    .hero-Visual img {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+    }
+    .section { padding: 4.5rem 0; border-top: 1px solid var(--border); }
+    .section-header { text-align: center; max-width: 720px; margin: 0 auto 3rem; }
+    .section-header h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); margin-bottom: 0.75rem; }
+    .section-header p { color: var(--muted); font-size: 1.05rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.75rem;
+    }
+    .feature-card .icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.85rem;
+      display: inline-block;
+    }
+    .feature-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; }
+    .feature-card p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Pricing Comparison */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .price-card.featured {
+      background: linear-gradient(180deg, #0f2e24 0%, #091d17 100%);
+      border: 2px solid var(--emerald);
+      box-shadow: 0 20px 55px rgba(16, 185, 129, 0.2);
+    }
+    .popular-tag {
+      position: absolute;
+      top: -14px;
+      right: 24px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+    }
+    .price-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .price-sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 1.5rem; }
+    .price-value { font-size: 2.75rem; font-weight: 900; color: #fff; margin-bottom: 0.25rem; }
+    .price-value small { font-size: 1rem; font-weight: 500; color: var(--muted); }
+    .check-list { list-style: none; margin: 1.5rem 0 2rem; flex: 1; }
+    .check-list li {
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.95rem;
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+    .btn-outline {
+      display: block;
+      text-align: center;
+      border: 2px solid var(--cyan);
+      color: #22d3ee;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 0.95rem 1.5rem;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+    .btn-outline:hover { background: rgba(6, 182, 212, 0.12); }
+
+    /* Mutually exclusive native <details> FAQ */
+    .faq-list { max-width: 760px; margin: 0 auto; display: grid; gap: 1rem; }
+    details.faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.35rem;
+    }
+    details.faq-item[open] { border-color: var(--emerald); }
+    details.faq-item summary {
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    details.faq-item summary::-webkit-details-marker { display: none; }
+    details.faq-item summary::after { content: "+"; font-size: 1.3rem; color: var(--emerald); }
+    details.faq-item[open] summary::after { content: "−"; }
+    details.faq-item p { margin-top: 0.85rem; color: var(--muted); font-size: 0.96rem; }
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">⚡ ACESSO VITALÍCIO IMEDIATO • GOOGLE PLANILHAS + EXCEL (.XLSX) • SEM MENSALIDADES</div>
+
+  <div class="container">
+    <section class="hero">
+      <div>
+        <div class="pill">📊 Sistema de Gestão Financeira Anual (12 Meses)</div>
+        <h1>Pare de Terminar o Mês sem Saber <span>Para Onde Seu Dinheiro Foi</span></h1>
+        <p>Preencha apenas as células amarelas em menos de 5 minutos por semana e tenha seu <strong>Relatório Anual</strong>, <strong>Custos Fixos vs. Variáveis</strong> e <strong>Painel Orçado x Realizado</strong> 100% calculados automaticamente.</p>
+        <a href="#planos" class="cta-btn">ESCOLHER MINHA VERSÃO AGORA →</a>
+        <p style="margin-top:0.9rem; font-size:0.85rem; color:#64748b;">🔒 Pagamento 100% Seguro via Hotmart • Garantia Incondicional de 7 Dias</p>
+      </div>
+      <div class="hero-Visual">
+        <img src="assets/capas/capa-ano-financeiro-pro.jpg" alt="Mockup Meu Ano Financeiro PRO" width="500" height="500">
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Por Que Você Vai Conseguir Manter Essa Planilha o Ano Inteiro?</h2>
+        <p>Esqueça planilhas poluídas onde você perde horas tentando entender fórmulas quebradas.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="icon">🟡</span>
+          <h3>Regra das Células Amarelas</h3>
+          <p>Informe Salário, Renda Extra, Meta de Economia e Teto de Gastos no topo do mês. Todo o resto se conecta sozinho sem risco de duplicar valores.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">⚖️</span>
+          <h3>Painel Orçado vs. Realizado</h3>
+          <p>Compare quanto você planejou gastar com quanto realmente saiu em cada categoria (Moradia, Alimentação, Transporte, Lazer e mais).</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">📌</span>
+          <h3>Fixos vs. Variáveis</h3>
+          <p>Saiba exatamente quanto da sua renda está comprometida com gastos essenciais fixos e onde estão os gastos variáveis fáceis de ajustar.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">📈</span>
+          <h3>Relatório Anual Automático</h3>
+          <p>Acompanhe os 12 meses consolidados, sua taxa de economia em %, o mês de maior gasto e a evolução da sua reserva financeira.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="planos">
+      <div class="section-header">
+        <h2>Escolha a Edição Ideal para o Seu Momento</h2>
+        <p>Acesso imediato no seu e-mail logo após a confirmação do pagamento pela Hotmart.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Simplificado -->
+        <div class="price-card">
+          <div class="price-title">Edição Simplificada</div>
+          <div class="price-sub">Ideal para iniciantes que querem controle rápido em 5 colunas essenciais.</div>
+          <div class="price-value">R$ 19,90 <small>pagamento único</small></div>
+          <ul class="check-list">
+            <li>✅ <strong>12 Abas Mensais</strong> (Janeiro a Dezembro)</li>
+            <li>✅ <strong>Tabela enxuta de 5 colunas</strong> (Data, Descrição, Categoria, Pagamento e Valor)</li>
+            <li>✅ <strong>Cartões de Topo:</strong> Salário, Renda Extra e Meta para Guardar</li>
+            <li>✅ <strong>Relatório Anual 100% Automático</strong></li>
+            <li>✅ <strong>Guia Rápido de Preenchimento</strong></li>
+            <li style="color:#64748b;">❌ Sem Painel Executivo Orçado x Realizado</li>
+            <li style="color:#64748b;">❌ Sem separação automática Fixo vs. Variável</li>
+          </ul>
+          <a href="https://pay.hotmart.com/O108090376B?checkoutMode=10" target="_blank" rel="noopener" class="btn-outline">QUERO A EDIÇÃO SIMPLIFICADA</a>
+        </div>
+
+        <!-- PRO -->
+        <div class="price-card featured">
+          <span class="popular-tag">🔥 Mais Vendida • Completa</span>
+          <div class="price-title">Edição Completa PRO</div>
+          <div class="price-sub">O sistema executivo completo com Painel Orçado vs. Realizado e Custos Fixos/Variáveis.</div>
+          <div class="price-value">R$ 47,00 <small>ou 6x de R$ 8,66</small></div>
+          <ul class="check-list">
+            <li>✅ <strong>Tudo da versão Simplificada +</strong></li>
+            <li>✅ <strong>Painel Executivo Orçado vs. Realizado</strong> com desvios em R$ e %</li>
+            <li>✅ <strong>Classificação de Natureza:</strong> Subtotal de Custos Fixos vs. Custos Variáveis</li>
+            <li>✅ <strong>Teto de Gasto Máximo Planejado</strong> com cálculo de Orçamento Restante no mês</li>
+            <li>✅ <strong>Controle de Status:</strong> Previsto, Pago/Recebido ou Cancelado</li>
+            <li>✅ <strong>Google Planilhas (1 clique) + Arquivo Excel (.xlsx)</strong></li>
+            <li>✅ <strong>Acesso Vitalício + Garantia de 7 Dias</strong></li>
+          </ul>
+          <a href="https://pay.hotmart.com/D108090477F?checkoutMode=10" target="_blank" rel="noopener" class="cta-btn" style="text-align:center;">QUERO A EDIÇÃO COMPLETA PRO →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Perguntas Frequentes</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" name="faq-financeiro" open>
+          <summary>Preciso pagar mensalidade para usar?</summary>
+          <p>Não! O pagamento é único e você tem acesso vitalício à planilha, podendo duplicá-la para todos os próximos anos sem pagar nada a mais.</p>
+        </details>
+        <details class="faq-item" name="faq-financeiro">
+          <summary>Funciona no celular e no computador?</summary>
+          <p>Sim! Você recebe o link de cópia automática para o Google Planilhas (que funciona gratuitamente no aplicativo do celular Android/iPhone e no navegador do PC) e também o arquivo em formato Excel (.xlsx).</p>
+        </details>
+        <details class="faq-item" name="faq-financeiro">
+          <summary>Como recebo o acesso após a compra?</summary>
+          <p>Imediatamente após a confirmação do pagamento (Pix ou Cartão liberam na mesma hora), a Hotmart envia o acesso diretamente para o seu e-mail.</p>
+        </details>
+        <details class="faq-item" name="faq-financeiro">
+          <summary>Meus dados financeiros ficam privados?</summary>
+          <p>100% privados! Ao clicar no botão de acesso, o sistema cria uma cópia exclusiva dentro do seu próprio Google Drive pessoal. Ninguém além de você tem acesso aos seus números.</p>
+        </details>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2026 Meu Ano Financeiro • Todos os direitos reservados • Comercializado com segurança via Hotmart.</p>
+  </footer>
+</body>
+</html>
+

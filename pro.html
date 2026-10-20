@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Ano Financeiro PRO — Controle Anual & Painel Orçado vs. Realizado</title>
+  <meta name="description" content="O sistema financeiro executivo em 10 colunas: compare o orçado com o realizado, separe custos fixos de variáveis e alcance suas metas de economia em 2026.">
+  <style>
+    :root {
+      --bg: #05100d;
+      --surface: #0b1f19;
+      --surface-2: #112d24;
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.35);
+      --gold: #f59e0b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .topbar {
+      background: linear-gradient(90deg, #065f46, #047857, #0f766e);
+      color: #fff;
+      text-align: center;
+      padding: 0.6rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
+    .hero {
+      padding: 4.5rem 0 4rem;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding: 3rem 0; }
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-size: clamp(2.1rem, 4vw, 3.2rem);
+      line-height: 1.12;
+      font-weight: 800;
+      margin-bottom: 1.25rem;
+    }
+    h1 span {
+      background: linear-gradient(135deg, #34d399, #10b981, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p { color: var(--muted); font-size: 1.12rem; margin-bottom: 2rem; }
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-decoration: none;
+      padding: 1.1rem 2.2rem;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(16, 185, 129, 0.5);
+    }
+    .hero-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.25rem;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.65);
+    }
+    .hero-visual img { width: 100%; border-radius: 16px; display: block; }
+    .section { padding: 4.5rem 0; border-top: 1px solid var(--border); }
+    .section-header { text-align: center; max-width: 740px; margin: 0 auto 3rem; }
+    .section-header h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); margin-bottom: 0.75rem; }
+    .section-header p { color: var(--muted); font-size: 1.05rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.75rem;
+    }
+    .feature-card .icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+    .feature-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .feature-card p { color: var(--muted); font-size: 0.95rem; }
+
+    .offer-box {
+      max-width: 620px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #102d24 0%, #091a15 100%);
+      border: 2px solid var(--emerald);
+      border-radius: 24px;
+      padding: 2.75rem 2rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.22);
+    }
+    .price-big { font-size: 3.2rem; font-weight: 900; margin: 1rem 0 0.25rem; color: #34d399; }
+    .check-list { list-style: none; text-align: left; margin: 1.75rem 0; }
+    .check-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.98rem;
+    }
+    .faq-list { max-width: 760px; margin: 0 auto; display: grid; gap: 1rem; }
+    details.faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.35rem;
+    }
+    details.faq-item[open] { border-color: var(--emerald); }
+    details.faq-item summary {
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    details.faq-item summary::-webkit-details-marker { display: none; }
+    details.faq-item summary::after { content: "+"; font-size: 1.3rem; color: var(--emerald); }
+    details.faq-item[open] summary::after { content: "−"; }
+    details.faq-item p { margin-top: 0.85rem; color: var(--muted); font-size: 0.96rem; }
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">⭐ SISTEMA EXECUTIVO DE CONTROLE ANUAL • ACESSO VITALÍCIO IMEDIATO</div>
+
+  <div class="container">
+    <section class="hero">
+      <div>
+        <div class="pill">💎 Edição Completa PRO</div>
+        <h1>Controle Financeiro Executivo: <span>Painel Orçado vs. Realizado</span></h1>
+        <p>Saiba com precisão cirúrgica para onde cada centavo do seu salário foi. Compare o que você planejou com o que realmente gastou, separe custos fixos de variáveis e corte desperdícios no piloto automático.</p>
+        <a href="#oferta" class="cta-btn">GARANTIR MEU ACESSO PRO →</a>
+        <p style="margin-top:0.9rem; font-size:0.85rem; color:#64748b;">🔒 Pagamento 100% Seguro via Hotmart • Garantia Incondicional de 7 Dias</p>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/capas/capa-ano-financeiro-pro.jpg" alt="Mockup Meu Ano Financeiro PRO" width="500" height="500">
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>O Que Torna a Edição PRO Incomparável?</h2>
+        <p>Desenvolvida com a lógica financeira dos melhores diretores executivos, mas simplificada para a sua rotina diária.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="icon">⚖️</span>
+          <h3>Painel Orçado vs. Realizado</h3>
+          <p>Defina o teto por categoria e veja os desvios em Reais (R$) e em porcentagem (%) calculados instantaneamente.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">📌</span>
+          <h3>Custos Fixos vs. Variáveis</h3>
+          <p>Classifique automaticamente a natureza dos gastos para saber exatamente o quanto da sua renda está comprometida.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">🚥</span>
+          <h3>Controle de Status</h3>
+          <p>Acompanhe lançamentos Previstos, Pagos/Recebidos e Cancelados sem correr o risco de esquecer contas a pagar.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">📈</span>
+          <h3>Painel Anual com KPIs</h3>
+          <p>Resumo dos 12 meses consolidados, gráficos de evolução patrimonial e análise de meses com maior volume de despesas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="oferta">
+      <div class="offer-box">
+        <div class="pill" style="margin-bottom:0.5rem;">Oferta Exclusiva com Acesso Vitalício</div>
+        <h2>Meu Ano Financeiro PRO</h2>
+        <div class="price-big">R$ 47,00</div>
+        <p style="color:var(--muted);">ou em até 6x de R$ 8,66 no cartão • Pagamento Único</p>
+        <ul class="check-list">
+          <li>✅ <strong>12 Abas Mensais Completas em 10 Colunas</strong></li>
+          <li>✅ <strong>Painel Executivo Orçado vs. Realizado Inteligente</strong></li>
+          <li>✅ <strong>Classificação de Natureza:</strong> Custos Fixos vs. Custos Variáveis</li>
+          <li>✅ <strong>Cálculo Automático de Orçamento Restante no Mês</strong></li>
+          <li>✅ <strong>Relatório Consolidado dos 12 Meses</strong></li>
+          <li>✅ <strong>Acesso no Google Planilhas (gratuito) e Excel (.xlsx)</strong></li>
+          <li>✅ <strong>Garantia Incondicional de 7 Dias pela Hotmart</strong></li>
+        </ul>
+        <a href="https://pay.hotmart.com/D108090477F?checkoutMode=10" target="_blank" rel="noopener" class="cta-btn" style="width:100%;">GARANTIR MEU ANO FINANCEIRO PRO AGORA →</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Perguntas Frequentes</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" name="faq-pro" open>
+          <summary>Qual a diferença entre a versão Simplificada e a PRO?</summary>
+          <p>A versão Simplificada possui 5 colunas essenciais, ideal para quem quer apenas anotar despesas rapidamente. A PRO é um sistema executivo completo em 10 colunas, com painel que cruza o valor planejado com o realizado, divide custos fixos e variáveis e calcula o orçamento restante automaticamente.</p>
+        </details>
+        <details class="faq-item" name="faq-pro">
+          <summary>Como recebo o acesso?</summary>
+          <p>Imediatamente após a aprovação do pagamento, a Hotmart envia para o seu e-mail os arquivos para download em Excel (.xlsx) e o link para copiar a planilha no Google Planilhas.</p>
+        </details>
+        <details class="faq-item" name="faq-pro">
+          <summary>Preciso de fórmulas complexas para atualizar?</summary>
+          <p>Não! Todas as fórmulas já vêm travadas e automatizadas. Você só preenche os valores dos seus gastos e receitas; o painel calcula e atualiza os gráficos sozinho.</p>
+        </details>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2026 Meu Ano Financeiro PRO • Comercializado via Hotmart.</p>
+  </footer>
+</body>
+</html>
